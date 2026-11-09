@@ -96,17 +96,5 @@ services:
       - ./src:/app/src
     restart: unless-stopped
 
-  jupyter:
-    profiles: ["dev"]
-    build:
-      context: .
-      dockerfile: docker/jupyter/Dockerfile
-    image: mental-health/jupyter:latest
-    env_file: .env
-    ports:
-      - "8888:8888"
-    volumes:
-      - .:/project
-
 volumes:
   postgres-db:

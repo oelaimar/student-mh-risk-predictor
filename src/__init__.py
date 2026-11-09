@@ -1,0 +1,8 @@
+"""Prédiction du risque de santé mentale chez les étudiants (projet pédagogique)."""
+
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+)
