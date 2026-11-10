@@ -35,12 +35,15 @@ class Config():
         self.TUNING_RESULTS_PATH = self.REPORTS_DIR / "tuning_results.json"
 
         # --- Données ---
-        self.TARGET_COL = os.getenv("TARGET_COL", "Mental_Health_Risk")
+        self.TARGET_COL: str = "Mental_Health_Risk"
+        self.TARGET_CLASSES: list[str]  = ["Low", "Medium", "High"]
         self.DROP_COLS: list[str] = ["Student_ID"]
         self.ORDINAL_COLS: dict[str, list] = {
             "Physical_Activity": ["Low", "Moderate", "High"],
             "Diet_Quality": ["Poor", "Average", "Good"],
         }
+        self.NUM_COLS = ['Age', 'Year_of_Study', 'Sleep_Hours', 'Study_Hours_Per_Week', 'GPA', 'Social_Media_Hours', 'Screen_Time_Hours', 'Financial_Stress', 'Family_Support', 'Attendance_Rate']
+        self.CAT_COLS = ['Student_ID', 'Gender', 'Physical_Activity', 'Part_Time_Job', 'Diet_Quality', 'Previous_Mental_Health_History']
 
         # --- Modélisation ---
         self.RANDOM_STATE = 42

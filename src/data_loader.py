@@ -2,6 +2,8 @@ import logging
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
+from scipy import stats
 
 from src.config import cfg
 
@@ -26,3 +28,18 @@ def load_data(path: str | Path | None = None):
     log.info("Données chargées : %s lignes x %s colonnes", *df.shape)
     
     return df
+
+def cleaning(df: pd.DataFrame) -> pd.DataFrame:
+    
+    df = df.copy()
+    # drop the Student_ID there is no impact
+    df = df.drop(columns=["Student_ID"])
+    
+    # delete outliers with zscore
+    z_scores = np.abs(stats.zscore(df[cfg.NUM_COLS], nan_policy="omit"))
+    mask = (z_scores <= 3).all(axis=1)
+    df = df[mask].copy()
+               
+    
+    return df.reset_index(drop=True)
+
