@@ -33,10 +33,14 @@ class Config():
         self.METRICS_PATH = self.REPORTS_DIR / "metrics.json"
         self.CV_RESULTS_PATH = self.REPORTS_DIR / "cv_results.csv"
         self.TUNING_RESULTS_PATH = self.REPORTS_DIR / "tuning_results.json"
+        self.FEATURE_IMPORTANCE_PATH = self.REPORTS_DIR / "feature_importance.csv"
+        self.TEST_PREDICTIONS_PATH = self.REPORTS_DIR / "test_predictions.csv"
 
         # --- Données ---
         self.TARGET_COL: str = "Mental_Health_Risk"
         self.TARGET_CLASSES: list[str]  = ["Low", "Medium", "High"]
+        self.POSITIVE_CLASS = "High"
+        
         self.DROP_COLS: list[str] = ["Student_ID"]
         self.ORDINAL_COLS: dict[str, list] = {
             "Physical_Activity": ["Low", "Moderate", "High"],

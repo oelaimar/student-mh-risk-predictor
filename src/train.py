@@ -11,7 +11,7 @@ from src.config import cfg
 from src.data_loader import load_data, cleaning
 from src.validation import validate_raw
 from src.preprocessing import split_data, split_xy, infer_column_types, build_pipeline
-from src.evaluate import save_json
+from src.evaluate import save_json, ordered_proba, compute_metrics, plot_confusion_matrix, plot_roc_curves, compute_feature_importance, plot_feature_importance
 
 from sklearn.metrics import make_scorer, precision_score
 from sklearn.dummy import DummyClassifier
@@ -168,3 +168,40 @@ def step_train(train_path: str | None = None) -> str:
     save_json(metadata, cfg.METADATA_PATH)
     log.info("Modèle sauvegardé : %s (%s)", cfg.MODEL_PATH, best_name)
     return str(cfg.MODEL_PATH)
+   
+   
+# --- évaluation sur le jeu de test indépendant
+def step_evaluate(model_path: str | None = None, test_path: str | None = None) -> dict:
+    """Évalue le modèle final sur le test, produit les graphiques et l'importance des variables."""
+    cfg.ensure_dirs()
+    model = joblib.load(model_path or cfg.MODEL_PATH)
+    X_test, y_test = split_xy(pd.read_csv(test_path or cfg.TEST_FILE))
+    classes = [c for c in cfg.TARGET_CLASSES if c in model.classes_]
+    
+    y_pred = model.predict(X_test)
+    y_proba = ordered_proba(model, X_test, classes)
+    metrics = compute_metrics(y_test, y_pred, y_proba, classes, cfg.POSITIVE_CLASS)
+    metrics["n_test"] = len(X_test)
+    metrics["evaluated_at"] = datetime.now().isoformat(timespec="seconds")
+    
+    plot_confusion_matrix(metrics["confusion_matrix"], metrics["labels"], cfg.FIGURES_DIR / "confusion_matrix.png")
+    plot_roc_curves(y_test, y_proba, classes, cfg.FIGURES_DIR / "roc_curves.png")
+   
+    importance = compute_feature_importance(model, X_test, y_test, cfg.SCORING, RS)
+    importance.to_csv(cfg.FEATURE_IMPORTANCE_PATH, index=False)
+    plot_feature_importance(importance, cfg.FIGURES_DIR / "feature_importance.png")
+   
+    # Prédictions du test conservées pour l'analyse des erreurs (notebook 02).
+    predictions = X_test.copy()
+    predictions["y_true"] = y_test.values
+    predictions["y_pred"] = y_pred
+    for i, cls in enumerate(classes):
+        predictions[f"proba_{cls}"] = y_proba[:, i].round(4)
+    predictions.to_csv(cfg.TEST_PREDICTIONS_PATH, index=False)
+
+    save_json(metrics, cfg.METRICS_PATH)
+    log.info(
+        "Test : accuracy=%.3f | f1_macro=%.3f | rappel %s=%.3f",
+        metrics["accuracy"], metrics["f1_macro"], cfg.POSITIVE_CLASS, metrics["positive_class_recall"],
+    )
+    return metrics
