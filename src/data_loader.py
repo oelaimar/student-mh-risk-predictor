@@ -32,14 +32,13 @@ def load_data(path: str | Path | None = None):
 def cleaning(df: pd.DataFrame) -> pd.DataFrame:
     
     df = df.copy()
-    # drop the Student_ID there is no impact
-    df = df.drop(columns=["Student_ID"])
-    
-    # delete outliers with zscore
-    z_scores = np.abs(stats.zscore(df[cfg.NUM_COLS], nan_policy="omit"))
-    mask = (z_scores <= 3).all(axis=1)
-    df = df[mask].copy()
-               
-    
+    n_start = len(df)
+    df = df.drop(columns=cfg.DROP_COLS, errors="ignore")   # Student_ID
+    df = df.drop_duplicates()
+    df = df.dropna(subset=[cfg.TARGET_COL])
+    log.info(
+        "Fin du nettoyage : %s lignes x %s colonnes (%s lignes supprimées au total)",
+        *df.shape, n_start - len(df),
+    )
     return df.reset_index(drop=True)
 

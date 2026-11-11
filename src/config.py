@@ -49,11 +49,11 @@ class Config():
         self.RANDOM_STATE = 42
         self.TEST_SIZE = 0.2
         self.CV_FOLDS = 5
-        self.SCORING = os.getenv("SCORING", "f1_macro")
+        self.SCORING = "f1_macro"
         self.TOP_K_MODELS = 2
-        self.N_ITER_SEARCH = int(os.getenv("N_ITER_SEARCH", "20"))
-        self.USE_SMOTE = os.getenv("USE_SMOTE", "true").lower() == "true"
-        self.MIN_F1 = float(os.getenv("MIN_F1", "0.5"))
+        self.N_ITER_SEARCH = 20
+        self.IMBALANCE_THRESHOLD = 1.5
+        self.MIN_F1 = 0.5
 
     def ensure_dirs(self) -> None:
         """Crée les dossiers de sortie s'ils n'existent pas."""

@@ -1,0 +1,150 @@
+{
+  "model_name": "logistic_regression",
+  "best_params": {
+    "model__C": 14.528246637516036,
+    "model__class_weight": "balanced"
+  },
+  "cv_score": 0.7518334783785268,
+  "scoring": "f1_macro",
+  "target": "Mental_Health_Risk",
+  "classes": [
+    "Low",
+    "Medium",
+    "High"
+  ],
+  "features": [
+    "Age",
+    "Gender",
+    "Year_of_Study",
+    "Sleep_Hours",
+    "Study_Hours_Per_Week",
+    "GPA",
+    "Social_Media_Hours",
+    "Screen_Time_Hours",
+    "Physical_Activity",
+    "Financial_Stress",
+    "Family_Support",
+    "Attendance_Rate",
+    "Part_Time_Job",
+    "Diet_Quality",
+    "Previous_Mental_Health_History"
+  ],
+  "numeric_features": [
+    "Age",
+    "Year_of_Study",
+    "Sleep_Hours",
+    "Study_Hours_Per_Week",
+    "GPA",
+    "Social_Media_Hours",
+    "Screen_Time_Hours",
+    "Financial_Stress",
+    "Family_Support",
+    "Attendance_Rate"
+  ],
+  "engineered_features": [
+    "Sleep_Deficit",
+    "Social_Media_Share",
+    "Support_Stress_Balance"
+  ],
+  "nominal_features": [
+    "Gender",
+    "Part_Time_Job",
+    "Previous_Mental_Health_History"
+  ],
+  "ordinal_features": [
+    "Physical_Activity",
+    "Diet_Quality"
+  ],
+  "numeric_stats": {
+    "Age": {
+      "min": 17.0,
+      "max": 28.0,
+      "median": 21.0,
+      "is_integer": true
+    },
+    "Year_of_Study": {
+      "min": 1.0,
+      "max": 5.0,
+      "median": 2.0,
+      "is_integer": true
+    },
+    "Sleep_Hours": {
+      "min": 3.6,
+      "max": 10.0,
+      "median": 6.7,
+      "is_integer": false
+    },
+    "Study_Hours_Per_Week": {
+      "min": 2.4,
+      "max": 38.3,
+      "median": 19.8,
+      "is_integer": false
+    },
+    "GPA": {
+      "min": 1.5,
+      "max": 3.66,
+      "median": 2.56,
+      "is_integer": false
+    },
+    "Social_Media_Hours": {
+      "min": 2.1,
+      "max": 10.0,
+      "median": 6.0,
+      "is_integer": false
+    },
+    "Screen_Time_Hours": {
+      "min": 3.3,
+      "max": 14.0,
+      "median": 8.5,
+      "is_integer": false
+    },
+    "Financial_Stress": {
+      "min": 1.4,
+      "max": 10.0,
+      "median": 6.1,
+      "is_integer": false
+    },
+    "Family_Support": {
+      "min": 1.7,
+      "max": 9.9,
+      "median": 6.7,
+      "is_integer": false
+    },
+    "Attendance_Rate": {
+      "min": 54.4,
+      "max": 100.0,
+      "median": 85.1,
+      "is_integer": false
+    }
+  },
+  "categories": {
+    "Gender": [
+      "Female",
+      "Male",
+      "Non-binary"
+    ],
+    "Part_Time_Job": [
+      "No",
+      "Yes"
+    ],
+    "Previous_Mental_Health_History": [
+      "No",
+      "Yes"
+    ]
+  },
+  "ordinal_categories": {
+    "Physical_Activity": [
+      "Low",
+      "Moderate",
+      "High"
+    ],
+    "Diet_Quality": [
+      "Poor",
+      "Average",
+      "Good"
+    ]
+  },
+  "n_train": 1600,
+  "trained_at": "2026-11-11T14:01:39",
+  "sklearn_version": "1.5.2"
+}

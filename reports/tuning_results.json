@@ -1,0 +1,21 @@
+{
+  "logistic_regression": {
+    "best_score": 0.7518334783785268,
+    "best_params": {
+      "model__C": 14.528246637516036,
+      "model__class_weight": "balanced"
+    },
+    "search_time_s": 0.99
+  },
+  "random_forest": {
+    "best_score": 0.6810878480622095,
+    "best_params": {
+      "model__n_estimators": 300,
+      "model__min_samples_split": 2,
+      "model__min_samples_leaf": 2,
+      "model__max_features": "sqrt",
+      "model__max_depth": 20
+    },
+    "search_time_s": 14.85
+  }
+}
