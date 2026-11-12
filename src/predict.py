@@ -17,7 +17,7 @@ def load_artifacts():
     model = joblib.load(cfg.MODEL_PATH)
     with open(cfg.METADATA_PATH, encoding="utf-8") as f:
         metadata = json.load(f)
-    return metadata, model
+    return model, metadata
 
 def predict(df: pd.DataFrame, model, metadata: dict) -> tuple[pd.DataFrame, list[str]]:
     """Retourne (données + prédiction + probabilités, avertissements)."""
