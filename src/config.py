@@ -20,11 +20,12 @@ class Config():
 
         self.DATA_ROW = self.ROOT / "data" / "raw"
         self.DATA_PROCESSED = self.ROOT / "data" / "processed"
+        self.RAW_FILE = self.DATA_ROW / "student_mental_health.csv"
         self.MODELS_DIR = self.ROOT / "models"
         self.REPORTS_DIR = self.ROOT / "reports"
         self.FIGURES_DIR = self.ROOT / self.REPORTS_DIR / "figures"
 
-        self.RAW_FILES = self.REPORTS_DIR / os.getenv("RAW_FILENAME", "students_mental_health.csv")
+        self.RAW_FILES = self.REPORTS_DIR / "students_mental_health.csv"
         self.TRAIN_FILE = self.DATA_PROCESSED / "train.csv"
         self.TEST_FILE = self.DATA_PROCESSED / "test.csv"
 

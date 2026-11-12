@@ -27,3 +27,48 @@ def validate_raw(df: pd.DataFrame, min_rows: int = 30) -> None:
     
     if errors:
         raise DataValidationError(" | ".join(errors))
+    
+def validate_input(df: pd.DataFrame, metadata: dict) -> tuple[pd.DataFrame, list[str]]:
+    """Prépare de nouvelles données pour la prédiction.
+
+    Retourne (X, avertissements) :
+    - erreur bloquante si des colonnes attendues manquent ;
+    - conversion des colonnes numériques (texte invalide -> NaN, imputé par le pipeline) ;
+    - avertissements pour les valeurs hors de la plage d'entraînement
+      ou les modalités inconnues (gérées par le pipeline, mais signalées).
+    """
+    if df is None or df.empty:
+        raise DataValidationError("Aucune donnée à prédire.")
+    
+    expected = metadata["features"]
+    missing = [c for c in expected if c not in df.columns]
+    if missing:
+        raise DataValidationError(f"Colonnes manquantes : {missing}")
+    
+    X = df[expected].copy()
+    warnings: list[str] = []
+    
+    for col in metadata["numeric_features"]:
+        raw = X[col]
+        X[col] = pd.to_numeric(raw, errors="coerce")
+        n_bad = int(X[col].isna().sum() - raw.isna().sum())
+        if n_bad:
+            warnings.append(f"{col} : {n_bad} valeur(s) non numérique(s) remplacée(s) par la médiane.")
+        stats = metadata["numeric_stats"][col]
+        n_out = int(((X[col] < stats["min"]) | (X[col] > stats["max"])).sum())
+        if n_out:
+            warnings.append(
+                f"{col} : {n_out} valeur(s) hors plage [{stats['min']} ; {stats['max']}], "
+                "ramenée(s) aux bornes apprises."
+            )
+    allowed = {**metadata["categories"], **metadata["ordinal_categories"]}
+    for col, values in allowed.items():
+        unknown = set(X[col].dropna().astype(str)) - set(map(str, values))
+        if unknown:
+            warnings.append(f"{col} : modalité(s) inconnue(s) {sorted(unknown)}.")
+
+    n_na = int(X.isna().sum().sum())
+    if n_na:
+        warnings.append(f"{n_na} valeur(s) manquante(s) imputée(s) par le pipeline.")
+
+    return X, warnings

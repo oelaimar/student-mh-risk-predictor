@@ -70,7 +70,7 @@ def step_prepare(raw_path: str | None = None) -> dict:
     log.info("Train : %s lignes | Test : %s lignes", len(X_train), len(X_test))
     return {"train": str(cfg.TRAIN_FILE), "test": str(cfg.TEST_FILE)}
 
-# --- omparaison, tuning, sauvegarde 
+# --- comparaison, tuning, sauvegarde 
 def compare_models(X, y, numeric, nominal, ordinal) -> pd.DataFrame:
     """Validation croisée de chaque modèle avec le même pipeline."""
     scoring = {

@@ -64,5 +64,5 @@
   "positive_class_recall": 0.8161764705882353,
   "high_predicted_as_low": 0,
   "n_test": 400,
-  "evaluated_at": "2026-11-11T16:54:00"
+  "evaluated_at": "2026-11-12T11:33:28"
 }
